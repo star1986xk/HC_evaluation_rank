@@ -1,0 +1,8 @@
+virtualenv ENV
+ENV\Scripts\activate
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
+
+修改E:\crawler_download\ENV\Lib\site-packages\PyInstaller\compat.py347行
+if encoding and isinstance(out, bytes):
+
+pyinstaller -i title.ico 信用评价_今日排名.py
