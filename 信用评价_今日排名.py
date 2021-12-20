@@ -62,7 +62,9 @@ class EvaluationRank(object):
                 else:
                     DB.insert_many(TABLE, [obj])
             except Exception as e:
-                pass
+                logger.error(
+                    'parser: query_date={} score_type={} 错误={}'.format(
+                        query_date, type_mappings.get(score_type), str(e)))
 
     def get_total_page(self, now_date: str, query_date: str, score_type: str) -> int:
         data = {
@@ -116,6 +118,7 @@ class EvaluationRank(object):
             data = urlencode(data).replace("+", "%2B").replace("/", "%2F").encode('utf8')
             response, status_code = request(self.session, DOMAIN + index_url.format(now_date), 'post', headers,
                                             data=data)
+            response.encoding = 'gbk'
             self.get_parm(response.text)
             self.parser(response.text, query_date, score_type)
         except Exception as e:
@@ -135,7 +138,7 @@ class EvaluationRank(object):
                 total_page = self.get_total_page(now_date, query_date, score_type)
                 for n in range(1, total_page + 1):
                     self.get_html(now_date, query_date, score_type, n)
-                date_start += datetime.timedelta(days=1)
+            date_start += datetime.timedelta(days=1)
 
 
 def main():
