@@ -144,8 +144,12 @@ class EvaluationRank(object):
 def main():
     if RUN_INTERVAL:
         while True:
-            EvaluationRank().run()
-            time.sleep(60 * 60 * int(RUN_INTERVAL))
+            try:
+                EvaluationRank().run()
+            except Exception as e:
+                print(e)
+            finally:
+                time.sleep(60 * 60 * int(RUN_INTERVAL))
     else:
         EvaluationRank().run()
 
